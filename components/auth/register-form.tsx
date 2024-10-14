@@ -44,6 +44,8 @@ export const RegisterForm=()=>{
         })
     }
     return (
+        <div className="min-h-[75dvh]">
+
         <CardWrapper
         headerLabel="Create an account"
         backButtonLabel="Already have an account?"
@@ -57,7 +59,7 @@ export const RegisterForm=()=>{
                  control={form.control}
                  name="name"
                  render={({field})=>(
-                    <FormItem>
+                     <FormItem>
                         <FormLabel>Name</FormLabel>
                         <FormControl>
                             <Input {...field} disabled={isPending} placeholder="alex" />
@@ -65,12 +67,12 @@ export const RegisterForm=()=>{
                         <FormMessage/>
                     </FormItem>
                  )}
-                />
+                 />
                 <FormField  
                  control={form.control}
                  name="email"
                  render={({field})=>(
-                    <FormItem>
+                     <FormItem>
                         <FormLabel>Email</FormLabel>
                         <FormControl>
                             <Input {...field} disabled={isPending} placeholder="alex@example.com" type="email" />
@@ -78,12 +80,12 @@ export const RegisterForm=()=>{
                         <FormMessage/>
                     </FormItem>
                  )}
-                />
+                 />
                 <FormField  
                  control={form.control}
                  name="password"
                  render={({field})=>(
-                    <FormItem>
+                     <FormItem>
                         <FormLabel>Password</FormLabel>
                         <FormControl>
                             <Input {...field} disabled={isPending} placeholder="********" type="password" />
@@ -91,7 +93,7 @@ export const RegisterForm=()=>{
                         <FormMessage/>
                     </FormItem>
                  )}
-                />
+                 />
             </div>
             <FormError message={error} />
             <FormSuccess message={success} />
@@ -102,5 +104,6 @@ export const RegisterForm=()=>{
 
         </Form>
         </CardWrapper>
+                 </div>
     )
 }
