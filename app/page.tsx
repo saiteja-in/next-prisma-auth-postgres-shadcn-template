@@ -4,9 +4,9 @@ import React from "react";
 
 const Home = () => {
   return (
-    <main className="flex items-center justify-center">
+    <main className="flex items-center justify-center min-h-screen ">
       <LoginButton>
-      <Button>Sign In</Button>
+        <Button>Sign In</Button>
       </LoginButton>
     </main>
   );

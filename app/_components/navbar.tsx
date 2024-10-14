@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button";
 
 const NavBar = () => {
   return (
-    <div className="border-b py-4 ">
+    <div className=" border-b py-4 ">
       <div className="container mx-auto flex items-center justify-between px-4 md:px-6 lg:px-8">
         <div className="flex items-center gap-6">
           <Link href="/" className="flex items-center gap-2 text-xl font-semibold text-gray-800 dark:text-gray-200">
