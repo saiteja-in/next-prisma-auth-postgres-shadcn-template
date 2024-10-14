@@ -1,12 +1,15 @@
-import { Button } from '@/components/ui/button'
-import React from 'react'
+import { LoginButton } from "@/components/auth/login-button";
+import { Button } from "@/components/ui/button";
+import React from "react";
 
-const page = () => {
+const Home = () => {
   return (
-    <div>
-      <Button variant={"outline"}>Hello auth</Button>
-    </div>
-  )
-}
+    <main className="flex items-center justify-center">
+      <LoginButton>
+      <Button>Sign In</Button>
+      </LoginButton>
+    </main>
+  );
+};
 
-export default page
+export default Home;
