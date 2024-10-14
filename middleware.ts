@@ -17,7 +17,7 @@ export default auth((req) => {
   if (isApiAuthRoute) {
     return;
   }
-
+    //if loggedin and tryna access any auth page, it redirects to the default redirect page(settings)
   if (isAuthRoute) {
     if (isLoggedIn) {
       return Response.redirect(new URL(DEFAULT_LOGIN_REDIRECT, nextUrl));
