@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { ThemeProvider } from "@/components/theme-provider";
 import localFont from "next/font/local";
+import NextTopLoader from 'nextjs-toploader';
 import "./globals.css";
 import NavBar from "./_components/navbar";
 
@@ -37,6 +38,7 @@ export default function RootLayout({
           disableTransitionOnChange
         >
           <NavBar />
+          <NextTopLoader />
           <div>{children}</div>
         </ThemeProvider>
       </body>
