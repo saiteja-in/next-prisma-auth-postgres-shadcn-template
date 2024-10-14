@@ -19,6 +19,7 @@ import { FormError } from "../form-error"
 import { FormSuccess } from "../form-success"
 import { useState, useTransition } from "react"
 import { register } from "@/actions/register"
+import { FaSpinner } from "react-icons/fa"
 export const RegisterForm=()=>{
     const [error,setError]=useState<string | undefined>("")
     const [success,setSuccess]=useState<string | undefined>("")
@@ -94,7 +95,9 @@ export const RegisterForm=()=>{
             </div>
             <FormError message={error} />
             <FormSuccess message={success} />
-            <Button type="submit" disabled={isPending} className="w-full">Register</Button>
+            <Button type="submit" disabled={isPending} className="w-full">
+                {isPending ? <FaSpinner size={20} className="animate-spin" /> : 'Register'}
+            </Button>
             </form>
 
         </Form>
