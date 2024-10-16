@@ -23,8 +23,7 @@ export default {
             password,
             user.password,
           );
-
-          if (passwordsMatch) return user;
+          if (passwordsMatch) return user;         
         }
 
         return null;
