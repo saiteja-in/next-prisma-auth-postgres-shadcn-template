@@ -9,7 +9,7 @@ const page = async() => {
     console.log(session)
   return (
     <div className='flex flex-col items-center justify-center min-h-screen'>
-      {session?.user?.id}
+      {session?.user?.role}
       <form action={async()=>{
         "use server"
         await signOut();
