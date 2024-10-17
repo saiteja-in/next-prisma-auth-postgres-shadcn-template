@@ -6,6 +6,14 @@ import { getUserById } from "./actions/user";
 import { UserRole } from "@prisma/client";
 import { useReducer } from "react";
 export const { handlers, signIn, signOut, auth } = NextAuth({
+    events:{
+        async linkAccount({user}){
+            await db.user.update({
+                where:{id:user.id},
+                data:{emailVerified:new Date()}
+            })
+        }
+    },
   callbacks: {
     // async signIn({user}){
     //     if(!user || !user.id){
