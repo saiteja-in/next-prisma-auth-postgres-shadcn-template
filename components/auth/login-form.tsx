@@ -21,6 +21,7 @@ import { useSearchParams } from "next/navigation";
 import { login } from "@/actions/login";
 import { useState, useTransition } from "react";
 import { FaSpinner } from "react-icons/fa";
+import Link from "next/link";
 export const LoginForm = () => {
   const searchParams = useSearchParams();
   const urlError =
@@ -90,6 +91,11 @@ export const LoginForm = () => {
                         type="password"
                       />
                     </FormControl>
+                    <Button size={"sm"} variant={"link"} asChild className="px-0">
+                      <Link href="/auth/reset">
+                      Forgot Password?
+                      </Link>
+                    </Button>
                     <FormMessage />
                   </FormItem>
                 )}

@@ -202,3 +202,160 @@ export const sendVerificationEmail = async (
     `
   });
 };
+export const sendPasswordResetEmail = async (
+  email: string,
+  token: string,
+) => {
+  const resetLink = `${domain}/auth/new-password?token=${token}`;
+
+  await resend.emails.send({
+    from: "onboarding@resend.dev",
+    to: email,
+    subject: "Reset your password",
+    html: `
+      <!DOCTYPE html>
+      <html>
+        <head>
+          <meta charset="utf-8">
+          <meta name="viewport" content="width=device-width, initial-scale=1.0">
+          <title>Reset Your Password</title>
+          <style>
+            body {
+              font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+              line-height: 1.8;
+              color: #374151;
+              margin: 0;
+              padding: 0;
+              background-color: #f3f4f6;
+            }
+            .container {
+              max-width: 600px;
+              margin: 40px auto;
+              padding: 40px 20px;
+              background: linear-gradient(145deg, #ffffff 0%, #f9fafb 100%);
+              border-radius: 16px;
+              box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            }
+            .header {
+              text-align: center;
+              padding: 30px;
+              background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+              border-radius: 12px;
+              margin-bottom: 32px;
+              box-shadow: 0 4px 6px -1px rgba(59, 130, 246, 0.2);
+            }
+            .header-icon {
+              font-size: 36px;
+              margin-bottom: 10px;
+            }
+            .header-text {
+              font-size: 28px;
+              font-weight: 800;
+              color: #ffffff;
+              text-decoration: none;
+              letter-spacing: -0.5px;
+              text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            }
+            .content {
+              padding: 32px;
+              background-color: #ffffff;
+              border-radius: 12px;
+              border: 1px solid #e5e7eb;
+              box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+            }
+            h2 {
+              color: #1f2937;
+              font-size: 24px;
+              font-weight: 700;
+              margin-bottom: 24px;
+              letter-spacing: -0.5px;
+            }
+            p {
+              color: #4b5563;
+              font-size: 16px;
+              margin-bottom: 16px;
+            }
+            .button-container {
+              text-align: center;
+              margin: 32px 0;
+            }
+            .button {
+              display: inline-block;
+              padding: 14px 32px;
+              background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+              color: #ffffff;
+              text-decoration: none;
+              border-radius: 8px;
+              font-weight: 600;
+              font-size: 16px;
+              transition: all 0.2s ease;
+              box-shadow: 0 4px 6px -1px rgba(59, 130, 246, 0.2), 0 2px 4px -1px rgba(59, 130, 246, 0.1);
+            }
+            .button:hover {
+              background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
+              transform: translateY(-1px);
+              box-shadow: 0 6px 8px -1px rgba(59, 130, 246, 0.3);
+            }
+            .footer {
+              text-align: center;
+              margin-top: 32px;
+              padding-top: 32px;
+              border-top: 1px solid #e5e7eb;
+            }
+            .footer p {
+              font-size: 14px;
+              color: #6b7280;
+              margin: 8px 0;
+            }
+            .warning {
+              background-color: #fff8f1;
+              border-left: 4px solid #f97316;
+              padding: 16px;
+              border-radius: 6px;
+              margin-top: 24px;
+            }
+            .warning p {
+              color: #9a3412;
+              font-size: 14px;
+              margin: 0;
+            }
+            .divider {
+              height: 1px;
+              background: linear-gradient(to right, transparent, #e5e7eb, transparent);
+              margin: 24px 0;
+            }
+          </style>
+        </head>
+        <body>
+          <div class="container">
+            <div class="header">
+              <div class="header-icon">🔐</div>
+              <div class="header-text">Password Reset</div>
+            </div>
+            <div class="content">
+              <h2>Reset Your Password</h2>
+              <p>Hello,</p>
+              <p>We received a request to reset your password. To proceed with the password reset, please click the button below:</p>
+              
+              <div class="button-container">
+                <a href="${resetLink}" class="button">Reset Password</a>
+              </div>
+              
+              <div class="divider"></div>
+              
+              <p>If you didn't request this password reset, you can safely ignore this email. Your password will remain unchanged.</p>
+              
+              <div class="warning">
+                <p><strong>⚠️ Security Notice:</strong> This password reset link will expire in 24 hours for your protection.</p>
+              </div>
+            </div>
+            
+            <div class="footer">
+              <p>This is an automated message, please do not reply to this email.</p>
+            </div>
+          </div>
+        </body>
+      </html>
+    `
+  });
+};
