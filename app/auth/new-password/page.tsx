@@ -1,17 +1,9 @@
-"use client"
-import { useSearchParams } from 'next/navigation';
-import React from 'react'
+import { NewPasswordForm } from "@/components/auth/new-password-form";
 
-const page = () => {
-    const searchParams = useSearchParams();
-
-  const token = searchParams.get("token");
-  console.log(token)
-  return (
-    <div>
-      {token}
-    </div>
-  )
+const NewPasswordPage = () => {
+  return ( 
+    <NewPasswordForm />
+   );
 }
-
-export default page
+ 
+export default NewPasswordPage;
