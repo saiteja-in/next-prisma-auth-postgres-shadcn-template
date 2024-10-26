@@ -1,10 +1,10 @@
 "use client";
-import React from "react";
+
+import React, { useEffect, useState, Suspense } from "react";
 import { ModeToggle } from "./ModeToggle";
 import Link from "next/link";
-import { LayoutDashboard, Lightbulb, User, LogOut } from "lucide-react";
+import { LayoutDashboard, Lightbulb, User, LogOut, Loader2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { useCurrentUser } from "@/hooks/use-current-user";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { LoginButton } from "@/components/auth/login-button";
 import {
@@ -16,11 +16,17 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { logout } from "@/actions/logout";
-import { useState } from "react";
+import { useSession } from "next-auth/react"; // Add this import
 
 const NavBar = () => {
-  const user = useCurrentUser();
+  const { data: session, status } = useSession(); // Replace useCurrentUser with useSession
   const [isLoggingOut, setIsLoggingOut] = useState(false);
+  const [mounted, setMounted] = useState(false);
+
+  // Handle hydration mismatch
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   const handleLogout = async () => {
     try {
@@ -32,6 +38,11 @@ const NavBar = () => {
       setIsLoggingOut(false);
     }
   };
+
+  // Don't render anything until client-side hydration is complete
+  if (!mounted) {
+    return null;
+  }
 
   return (
     <nav className="border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
@@ -61,65 +72,69 @@ const NavBar = () => {
 
         <div className="flex items-center gap-4">
           <ModeToggle />
-          {user ? (
-            <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <Button
-                  variant="ghost"
-                  className="relative h-10 w-10 rounded-full"
-                >
-                  <Avatar className="h-10 w-10">
-                    {user?.image ? (
-                      <AvatarImage
-                        src={user.image}
-                        alt={user.name || "User avatar"}
-                      />
-                    ) : (
-                      <AvatarFallback className="bg-primary/10">
-                        {user?.name?.substring(0, 2).toUpperCase() ?? "AA"}
-                      </AvatarFallback>
-                    )}
-                  </Avatar>
+          <Suspense fallback={<Loader2 className="h-4 w-4 animate-spin" />}>
+            {status === "authenticated" && session?.user ? (
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <Button
+                    variant="ghost"
+                    className="relative h-10 w-10 rounded-full"
+                  >
+                    <Avatar className="h-10 w-10">
+                      {session.user.image ? (
+                        <AvatarImage
+                          src={session.user.image}
+                          alt={session.user.name || "User avatar"}
+                        />
+                      ) : (
+                        <AvatarFallback className="bg-primary/10">
+                          {session.user.name?.substring(0, 2).toUpperCase() ?? "AA"}
+                        </AvatarFallback>
+                      )}
+                    </Avatar>
+                  </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent className="w-56" align="end" forceMount>
+                  <DropdownMenuLabel className="font-normal">
+                    <div className="flex flex-col space-y-1">
+                      <p className="text-sm font-medium leading-none">
+                        {session.user.name}
+                      </p>
+                      <p className="text-xs leading-none text-muted-foreground">
+                        {session.user.email}
+                      </p>
+                    </div>
+                  </DropdownMenuLabel>
+                  <DropdownMenuSeparator />
+                  <DropdownMenuItem asChild>
+                    <Link href="/profile" className="flex items-center cursor-pointer">
+                      <User className="mr-2 h-4 w-4" />
+                      <span>Profile</span>
+                    </Link>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem
+                    className="text-red-600 focus:text-red-600 focus:bg-red-50 dark:focus:bg-red-950"
+                    onClick={handleLogout}
+                    disabled={isLoggingOut}
+                  >
+                    <div className="flex items-center w-full">
+                      <LogOut className="mr-2 h-4 w-4" />
+                      <span>{isLoggingOut ? "Logging out..." : "Log out"}</span>
+                    </div>
+                  </DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
+            ) : status === "loading" ? (
+              <Loader2 className="h-4 w-4 animate-spin" />
+            ) : (
+              <LoginButton>
+                <Button className="gap-2">
+                  <User className="h-4 w-4" />
+                  Sign In
                 </Button>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent className="w-56" align="end" forceMount>
-                <DropdownMenuLabel className="font-normal">
-                  <div className="flex flex-col space-y-1">
-                    <p className="text-sm font-medium leading-none">
-                      {user.name}
-                    </p>
-                    <p className="text-xs leading-none text-muted-foreground">
-                      {user.email}
-                    </p>
-                  </div>
-                </DropdownMenuLabel>
-                <DropdownMenuSeparator />
-                <DropdownMenuItem asChild>
-                  <Link href="/profile" className="flex items-center cursor-pointer">
-                    <User className="mr-2 h-4 w-4" />
-                    <span>Profile</span>
-                  </Link>
-                </DropdownMenuItem>
-                <DropdownMenuItem
-                  className="text-red-600 focus:text-red-600 focus:bg-red-50 dark:focus:bg-red-950"
-                  onClick={handleLogout}
-                  disabled={isLoggingOut}
-                >
-                  <div className="flex items-center w-full">
-                    <LogOut className="mr-2 h-4 w-4" />
-                    <span>{isLoggingOut ? "Logging out..." : "Log out"}</span>
-                  </div>
-                </DropdownMenuItem>
-              </DropdownMenuContent>
-            </DropdownMenu>
-          ) : (
-            <LoginButton>
-              <Button className="gap-2">
-                <User className="h-4 w-4" />
-                Sign In
-              </Button>
-            </LoginButton>
-          )}
+              </LoginButton>
+            )}
+          </Suspense>
         </div>
       </div>
     </nav>
