@@ -5,9 +5,10 @@ import React from "react";
 const Home = () => {
   return (
     <main className="flex items-center justify-center min-h-screen ">
-      <LoginButton>
+      {/* <LoginButton>
         <Button>Sign In</Button>
-      </LoginButton>
+      </LoginButton> */}
+      This is the home page
     </main>
   );
 };
