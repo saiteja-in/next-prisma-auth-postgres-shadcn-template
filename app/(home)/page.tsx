@@ -3,15 +3,14 @@ import { Button } from "@/components/ui/button";
 import React from "react";
 import NavBar from "../_components/navbar";
 import NextTopLoader from "nextjs-toploader";
+import { currentUser } from "@/lib/auth";
 
-const Home = () => {
+const Home = async() => {
+  const user=await currentUser()
   return (
     <main className="min-h-screen">
-      {/* <LoginButton>
-        <Button>Sign In</Button>
-      </LoginButton> */}
       <NavBar/>
-      This is the home page
+      {user?.role}
     </main>
   );
 };
