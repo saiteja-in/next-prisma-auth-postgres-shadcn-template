@@ -7,7 +7,6 @@ import NavBar from "./_components/navbar";
 import { Footer } from "./_components/footer";
 import { SessionProvider } from "next-auth/react";
 import { auth } from "@/auth";
-import ProtectedLayout from "./(protected)/layout";
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -32,7 +31,7 @@ export default async function RootLayout({
 }>) {
   const session = await auth()
   return (
-    <ProtectedLayout>
+    <SessionProvider session={session}>
       <html lang="en">
         <body
           className={`${geistSans.variable} ${geistMono.variable} antialiased`}
@@ -50,6 +49,6 @@ export default async function RootLayout({
           </ThemeProvider>
         </body>
       </html>
-    </ProtectedLayout>
+    </SessionProvider>
   );
 }

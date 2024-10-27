@@ -5,7 +5,12 @@ import { db } from "./lib/db";
 import { getUserById } from "./actions/user";
 import { UserRole } from "@prisma/client";
 import { useReducer } from "react";
-export const { handlers, signIn, signOut, auth } = NextAuth({
+import { getAccountByUserId } from "./data/account";
+export const { handlers, signIn, signOut, auth ,unstable_update} = NextAuth({
+  pages:{
+    signIn:"/auth/login",
+    error:"/auth/error"
+  },
     events:{
         async linkAccount({user}){
             await db.user.update({
@@ -44,10 +49,11 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
       if (token.role && session.user) {
         session.user.role = token.role as UserRole;
       }
-      // if(session.user){
-      //   session.user.name=token.name ?? '';
-      //   session.user.email=token.email ?? '';
-      // }
+      if(session.user){
+        session.user.name=token.name ;
+        session.user.email=token.email as string;
+        session.user.isOAuth=token.isOAuth as boolean
+      }
       return session;
     },
     async jwt({ token }) {
@@ -55,8 +61,12 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
       if (!token.sub) return token;
       const existingUser = await getUserById(token.sub);
       if (!existingUser) return token;
-      // token.name=existingUser.name
-      // token.email=existingUser.email
+      const existingAccount = await getAccountByUserId(
+        existingUser.id
+      );
+      token.isOAuth=!!existingAccount
+      token.name=existingUser.name
+      token.email=existingUser.email
       token.role = existingUser.role;
       return token;
     },
