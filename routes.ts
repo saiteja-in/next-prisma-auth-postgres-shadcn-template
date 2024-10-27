@@ -6,6 +6,9 @@ export const publicRoutes = [
   "/",
   "/auth/new-verification"
 ];
+export const protectedRoutes = [
+  "/settings",
+];
 
 /**
  * An array of routes that are used for authentication
