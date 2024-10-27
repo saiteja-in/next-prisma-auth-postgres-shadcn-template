@@ -59,11 +59,7 @@ const NavBar = async () => {
                       alt={user.name || "User avatar"}
                     />
                     <AvatarFallback className="bg-primary/10">
-                      {user.name
-                        ?.split(" ")
-                        .map((n) => n[0])
-                        .join("")
-                        .toUpperCase() || "U"}
+                    {user.name?.substring(0, 2).toUpperCase() ?? "AA"}
                     </AvatarFallback>
                   </Avatar>
                 </Button>
