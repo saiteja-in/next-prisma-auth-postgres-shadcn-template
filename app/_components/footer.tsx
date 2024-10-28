@@ -1,6 +1,5 @@
 import { Github, Twitter, Linkedin } from "lucide-react";
 import Link from "next/link";
-import { ModeToggle } from "./ModeToggle";
 
 export function Footer() {
   return (
@@ -34,7 +33,6 @@ export function Footer() {
             >
               Shipping & Delivery
             </Link>
-            <ModeToggle/>
             <Link
               href="#contact-us"
               className="text-sm text-muted-foreground transition-colors hover:text-primary"

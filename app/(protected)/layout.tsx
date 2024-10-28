@@ -17,6 +17,7 @@ import { buttonVariants } from '@/components/ui/button'
 import { cn } from '@/lib/utils'
 import Link from 'next/link'
 import React from 'react'
+import { ModeToggle } from '../_components/ModeToggle'
 
 export default async function layout({
 	children,
@@ -24,7 +25,7 @@ export default async function layout({
 {
   return (
 	<div className='min-h-screen flex flex-col'>
-		<nav className="container p-4">
+		<nav className="container py-4 px-10 flex justify-between ">
         <Link 
           className={cn(
             buttonVariants({ variant: "outline" }),
@@ -34,6 +35,7 @@ export default async function layout({
         >
           Home
         </Link>
+		<ModeToggle/>
 		</nav>
 		<main className="flex-1 flex items-center justify-center">
         <div className="container flex items-center justify-center">

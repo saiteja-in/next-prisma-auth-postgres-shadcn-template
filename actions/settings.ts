@@ -10,20 +10,19 @@ import { getUserByEmail, getUserById } from "./user";
 import { currentUser } from "@/lib/auth";
 import { generateVerificationToken } from "@/lib/tokens";
 import { sendVerificationEmail } from "@/lib/mail";
+import { revalidatePath } from "next/cache";
 
-export const settings = async (
-  values: z.infer<typeof SettingsSchema>
-) => {
+export const settings = async (values: z.infer<typeof SettingsSchema>) => {
   const user = await currentUser();
 
   if (!user) {
-    return { error: "Unauthorized" }
+    return { error: "Unauthorized" };
   }
 
   const dbUser = await getUserById(user.id as string);
 
   if (!dbUser) {
-    return { error: "Unauthorized" }
+    return { error: "Unauthorized" };
   }
 
   if (user.isOAuth) {
@@ -36,15 +35,13 @@ export const settings = async (
     const existingUser = await getUserByEmail(values.email);
 
     if (existingUser && existingUser.id !== user.id) {
-      return { error: "Email already in use!" }
+      return { error: "Email already in use!" };
     }
 
-    const verificationToken = await generateVerificationToken(
-      values.email
-    );
+    const verificationToken = await generateVerificationToken(values.email);
     await sendVerificationEmail(
       verificationToken.email,
-      verificationToken.token,
+      verificationToken.token
     );
 
     return { success: "Verification email sent!" };
@@ -53,17 +50,14 @@ export const settings = async (
   if (values.password && values.newPassword && dbUser.password) {
     const passwordsMatch = await bcrypt.compare(
       values.password,
-      dbUser.password,
+      dbUser.password
     );
 
     if (!passwordsMatch) {
       return { error: "Incorrect password!" };
     }
 
-    const hashedPassword = await bcrypt.hash(
-      values.newPassword,
-      10,
-    );
+    const hashedPassword = await bcrypt.hash(values.newPassword, 10);
     values.password = hashedPassword;
     values.newPassword = undefined;
   }
@@ -72,7 +66,7 @@ export const settings = async (
     where: { id: dbUser.id },
     data: {
       ...values,
-    }
+    },
   });
 
   update({
@@ -80,8 +74,9 @@ export const settings = async (
       name: updatedUser.name,
       email: updatedUser.email,
       role: updatedUser.role,
-    }
+    },
   });
-
-  return { success: "Settings Updated!" }
-}
+  revalidatePath("/");
+  // revalidatePath("/settings");
+  return { success: "Settings Updated!" };
+};
