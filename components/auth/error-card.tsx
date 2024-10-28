@@ -1,7 +1,5 @@
-import { ExclamationTriangleIcon } from "@radix-ui/react-icons";
-
 import { CardWrapper } from "@/components/auth/card-wrapper";
-import { FaExclamation, FaExclamationTriangle } from "react-icons/fa";
+import { FaExclamationTriangle } from "react-icons/fa";
 
 export const ErrorCard = () => {
   return (

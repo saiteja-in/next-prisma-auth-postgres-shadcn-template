@@ -4,7 +4,6 @@ import { PrismaAdapter } from "@auth/prisma-adapter";
 import { db } from "./lib/db";
 import { getUserById } from "./actions/user";
 import { UserRole } from "@prisma/client";
-import { useReducer } from "react";
 import { getAccountByUserId } from "./data/account";
 export const { handlers, signIn, signOut, auth ,unstable_update} = NextAuth({
   pages:{

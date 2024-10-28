@@ -3,7 +3,7 @@ import { ThemeProvider } from "@/components/theme-provider";
 import localFont from "next/font/local";
 import NextTopLoader from "nextjs-toploader";
 import "./globals.css";
-import NavBar from "./_components/navbar";
+// import NavBar from "./_components/navbar";
 import { Footer } from "./_components/footer";
 import { SessionProvider } from "next-auth/react";
 import { auth } from "@/auth";
