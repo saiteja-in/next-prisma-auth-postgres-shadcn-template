@@ -37,7 +37,7 @@ export const sendVerificationEmail = async (
   const confirmLink = `${domain}/auth/new-verification?token=${token}`;
 
   await resend.emails.send({
-    from: "onboarding@resend.dev",
+    from: "mail@saiteja.us",
     to: email,
     subject: "Confirm your email",
     html: `
@@ -209,7 +209,7 @@ export const sendPasswordResetEmail = async (
   const resetLink = `${domain}/auth/new-password?token=${token}`;
 
   await resend.emails.send({
-    from: "onboarding@resend.dev",
+    from: "mail@saiteja.us",
     to: email,
     subject: "Reset your password",
     html: `
