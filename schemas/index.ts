@@ -8,6 +8,7 @@ export const LoginSchema = z.object({
     message: "Password is required",
   }),
 });
+
 export const RegisterSchema = z.object({
   email: z.string().email({
     message: "Email is required",
@@ -19,6 +20,7 @@ export const RegisterSchema = z.object({
     message: "Name is required",
   }),
 });
+
 export const ResetSchema = z.object({
   email: z.string().email({
     message: "Email is required",
@@ -64,3 +66,11 @@ export const SettingsSchema = z
       path: ["password"],
     }
   );
+
+  import { User as PrismaUser } from "@prisma/client";
+
+  export interface ExtendedUser extends PrismaUser {
+    role: UserRole;
+    isOAuth: boolean;
+  }
+  
