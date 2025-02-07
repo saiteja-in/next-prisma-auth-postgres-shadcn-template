@@ -5,23 +5,39 @@ import { useForm } from "react-hook-form";
 import { useState, useTransition } from "react";
 import { useSearchParams } from "next/navigation";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { LockKeyhole } from "lucide-react";
 
-import { NewPasswordSchema } from "@/schemas";
-import { Input } from "@/components/ui/input";
+import { CardWrapper } from "@/components/auth/card-wrapper";
+import { Button } from "@/components/ui/button";
+import { FormError } from "@/components/form-error";
+import { FormSuccess } from "@/components/form-success";
+import { newPassword } from "@/actions/new-password";
+import { FaSpinner } from "react-icons/fa";
 import {
   Form,
   FormControl,
   FormField,
   FormItem,
   FormLabel,
-  FormMessage,  
+  FormMessage,
 } from "@/components/ui/form";
-import { CardWrapper } from "@/components/auth/card-wrapper"
-import { Button } from "@/components/ui/button";
-import { FormError } from "@/components/form-error";
-import { FormSuccess } from "@/components/form-success";
-import { newPassword } from "@/actions/new-password";
-import { FaSpinner } from "react-icons/fa";
+import {
+  PasswordInput,
+  PasswordInputAdornment,
+  PasswordInputAdornmentToggle,
+  PasswordInputInput,
+} from "@/components/ui/password-input";
+
+// Modified schema to include password confirmation
+const NewPasswordSchema = z.object({
+  password: z.string().min(8, {
+    message: "Password must be at least 8 characters.",
+  }),
+  confirmPassword: z.string()
+}).refine((data) => data.password === data.confirmPassword, {
+  message: "Passwords don't match",
+  path: ["confirmPassword"],
+});
 
 export const NewPasswordForm = () => {
   const searchParams = useSearchParams();
@@ -35,6 +51,7 @@ export const NewPasswordForm = () => {
     resolver: zodResolver(NewPasswordSchema),
     defaultValues: {
       password: "",
+      confirmPassword: "",
     },
   });
 
@@ -69,14 +86,44 @@ export const NewPasswordForm = () => {
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Password</FormLabel>
-                  <FormControl>
-                    <Input
-                      {...field}
-                      disabled={isPending}
-                      placeholder="******"
-                      type="password"
-                    />
-                  </FormControl>
+                  <PasswordInput>
+                    <PasswordInputAdornment>
+                      <LockKeyhole className="size-4" />
+                    </PasswordInputAdornment>
+                    <FormControl>
+                      <PasswordInputInput
+                        {...field}
+                        disabled={isPending}
+                        placeholder="Enter new password"
+                        autoComplete="new-password"
+                      />
+                    </FormControl>
+                    <PasswordInputAdornmentToggle />
+                  </PasswordInput>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="confirmPassword"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Confirm Password</FormLabel>
+                  <PasswordInput>
+                    <PasswordInputAdornment>
+                      <LockKeyhole className="size-4" />
+                    </PasswordInputAdornment>
+                    <FormControl>
+                      <PasswordInputInput
+                        {...field}
+                        disabled={isPending}
+                        placeholder="Confirm new password"
+                        autoComplete="new-password"
+                      />
+                    </FormControl>
+                    <PasswordInputAdornmentToggle />
+                  </PasswordInput>
                   <FormMessage />
                 </FormItem>
               )}
@@ -89,8 +136,11 @@ export const NewPasswordForm = () => {
             type="submit"
             className="w-full"
           >
-            {isPending ? <FaSpinner size={"20"} className="animate-spin"/>:<p> Reset password</p>}
-           
+            {isPending ? (
+              <FaSpinner size={20} className="animate-spin" />
+            ) : (
+              "Reset password"
+            )}
           </Button>
         </form>
       </Form>

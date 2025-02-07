@@ -19,6 +19,11 @@ import { FormSuccess } from "../form-success";
 import { useState, useTransition } from "react";
 import { register } from "@/actions/register";
 import { FaSpinner } from "react-icons/fa";
+import {
+  PasswordInput,
+  PasswordInputInput,
+  PasswordInputAdornmentToggle,
+} from "@/components/ui/password-input";
 export const RegisterForm = () => {
   const [error, setError] = useState<string | undefined>("");
   const [success, setSuccess] = useState<string | undefined>("");
@@ -94,12 +99,14 @@ export const RegisterForm = () => {
                   <FormItem>
                     <FormLabel>Password</FormLabel>
                     <FormControl>
-                      <Input
-                        {...field}
-                        disabled={isPending}
-                        placeholder="********"
-                        type="password"
-                      />
+                    <PasswordInput>
+                        <PasswordInputInput
+                          {...field}
+                          disabled={isPending}
+                          placeholder="********"
+                        />
+                        <PasswordInputAdornmentToggle />
+                      </PasswordInput>
                     </FormControl>
                     <FormMessage />
                   </FormItem>
